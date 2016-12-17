@@ -6,8 +6,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+//var users = require('./routes/users');
 var ethereum = require('./routes/ethereum');
+
+var contract = "";
 
 var app = express();
 
