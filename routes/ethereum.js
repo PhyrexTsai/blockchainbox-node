@@ -21,13 +21,17 @@ router.get('/balance', function(req, res, next) {
   res.json({'coinbase': coinbase, 'balance': balance});
 });
 
-// send transaction
+/**
+ * POST send transaction
+ */
 router.post('/transaction', function(req, res, next) {
 
   res.json({'txHash': txHash});
 });
 
-// query contract
+/**
+ * GET query txHash from contract
+ */
 router.get('/transaction', function(req, res, next) {
   var txHash = req.query.txHash;
   if (txHash == null || txHash == '' || txHash == undefined) {

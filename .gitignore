@@ -39,3 +39,5 @@ jspm_packages
 # Intellij
 .idea
 blockchainbox-node.iml
+
+.bash_profile
