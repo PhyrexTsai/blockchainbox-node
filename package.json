@@ -1,7 +1,7 @@
 {
   "name": "blockchainbox-node",
-  "version": "0.0.0",
-  "description": "A node server to provide Web3 service and pass message with Kafka",
+  "version": "0.0.1",
+  "description": "A node server to provide Web3 service",
   "author": "Phyrex Tsai",
   "private": false,
   "repository": {

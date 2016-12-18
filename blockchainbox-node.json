@@ -1,0 +1,27 @@
+{
+  apps : [{
+    name        : "blockchainbox-worker",
+    script      : "./worker/worker.js",
+    watch       : true,
+    env         : {
+      "NODE_ENV"          : "development",
+      "ENODE_BASE"        : "http://localhost:8545"
+    },
+    env_production : {
+      "NODE_ENV": "production",
+      "ENODE_BASE"        : "http://localhost:8545"
+    }
+  },{
+    name       : "blockchainbox-node",
+    script     : "./bin/www",
+    watch       : true,
+    env: {
+      "NODE_ENV": "development",
+      "ENODE_BASE"        : "http://localhost:8545"
+    },
+    env_production : {
+      "NODE_ENV": "production",
+      "ENODE_BASE"        : "http://localhost:8545"
+    }
+  }]
+}

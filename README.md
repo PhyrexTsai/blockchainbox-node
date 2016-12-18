@@ -27,8 +27,8 @@ geth --networkid 16888 --port 30303 --nodiscover --maxpeers 25 --nat "any" --rpc
 git clone https://github.com/PhyrexTsai/blockchainbox-node.git
 cd blockchainbox-node
 
--- start service
-npm start
+-- start service with pm2
+./start.sh
 ```
 
 ### Access on localhost
