@@ -3,7 +3,7 @@ var Web3 = require('web3');
 var web3 = new Web3();
 var router = express.Router();
 
-web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
+web3.setProvider(new web3.providers.HttpProvider('http://localhost:' + (process.env.ENODE_PORT || '8545')));
 var coinbase = web3.eth.coinbase;
 
 /**

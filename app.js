@@ -9,9 +9,10 @@ var index = require('./routes/index');
 //var users = require('./routes/users');
 var ethereum = require('./routes/ethereum');
 
-var contract = "";
-
 var app = express();
+
+// environment settings
+var contract = process.env.CONTRACT;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
