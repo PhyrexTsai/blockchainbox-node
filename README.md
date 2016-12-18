@@ -1,4 +1,11 @@
 # Blockchainbox-node
+  
+Write by node.js, handle the ethereum web3.js.
+Contains:  
+- Kafka consumer
+- Kafka producer
+- web3.js proxy
+- Event listener worker
 
 ## How to start service
 
