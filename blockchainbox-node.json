@@ -5,11 +5,11 @@
     watch       : true,
     env         : {
       "NODE_ENV"          : "development",
-      "ENODE_BASE"        : "http://localhost:8545"
-    },
-    env_production : {
-      "NODE_ENV": "production",
-      "ENODE_BASE"        : "http://localhost:8545"
+      "ENODE_BASE"        : "http://localhost:8545",
+      "POSTGRESQL_HOST"   : "localhost",
+      "POSTGRESQL_PORT"   : 5432,
+      "KAFKA_HOST"        : "localhost",
+      "KAFKA_PORT"        : 9092
     }
   },{
     name       : "blockchainbox-node",
@@ -17,11 +17,11 @@
     watch       : true,
     env: {
       "NODE_ENV": "development",
-      "ENODE_BASE"        : "http://localhost:8545"
-    },
-    env_production : {
-      "NODE_ENV": "production",
-      "ENODE_BASE"        : "http://localhost:8545"
+      "ENODE_BASE"        : "http://localhost:8545",
+      "POSTGRESQL_HOST"   : "localhost",
+      "POSTGRESQL_PORT"   : 5432,
+      "KAFKA_HOST"        : "localhost",
+      "KAFKA_PORT"        : 9092
     }
   }]
 }
