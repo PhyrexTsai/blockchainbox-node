@@ -7,3 +7,5 @@
  * 4. Web3 event producer, include web3 error handling
  * 
  */
+
+console.log("Hi");
