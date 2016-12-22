@@ -22,19 +22,29 @@ router.get('/balance', function(req, res, next) {
 });
 
 /**
+ * 這邊是在針對兩兩之間送錢的做的 transaction，如果是針對合約送錢需要使用 data 寫入合約的 byteCode
  * PUT send transaction
  * https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethsendtransaction
  */
 router.put('/transaction', function(req, res, next) {
   // TODO: init gas maximum
-  web3.eth.sendTransaction({data: contract/*, gas: */}, function(err, txHash) {
-    if (!err) {
-      res.json({'data' :{'txHash': txHash}});
-      //console.log(address); // "0x7f9fade1c0d57a7af66ab4ead7c2eb7b11a91385"
-    } else {
-      res.json({'error': {'code': 101, 'message': err}});
+  web3.eth.sendTransaction(
+    {
+      from: req.body.from,
+      //data: contract,
+      gas: 4700000,
+      to: req.body.to,
+      value: req.body.value
+    },
+    function(err, txHash) {
+      if (!err) {
+        res.json({'data' :{'txHash': txHash}});
+        //console.log(txHash); // "0x7f9fade1c0d57a7af66ab4ead7c2eb7b11a91385"
+      } else {
+        res.json({'error': {'code': 101, 'message': err}});
+      }
     }
-  });
+  );
 });
 
 /**
@@ -55,11 +65,14 @@ router.get('/transaction', function(req, res, next) {
  */
 router.get('/estimateGas', function(req, res, next) {
   var result = web3.eth.estimateGas({
-    to: "0xc4abd0339eb8d57087278718986382264244252f",
-    data: "0xc6888fa10000000000000000000000000000000000000000000000000000000000000003"
+    to: req.query.to,
+    data: req.query.data
   });
   res.json({'date': {'gas': result}});
 });
+
+// deploy contract via: web3.eth.contract
+// https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethcontract
 
 // worker: load Event
 // https://github.com/ethereum/wiki/wiki/JavaScript-API#contract-events
@@ -67,8 +80,5 @@ router.get('/estimateGas', function(req, res, next) {
 
 // worker: web3.eth.filter, filter pending
 // https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethfilter
-
-// deploy contract via: web3.eth.contract
-// https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethcontract
 
 module.exports = router;
