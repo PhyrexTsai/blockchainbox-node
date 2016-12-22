@@ -6,7 +6,7 @@ var pg = require('pg');
 // will be read if the config is not present
 var config = {
     user: 'root', //env var: PGUSER
-    database: 'blockchainbox', //env var: PGDATABASE
+    database: 'postgres', //env var: PGDATABASE
     password: 'root', //env var: PGPASSWORD
     host: 'localhost', // Server hosting the postgres database
     port: 5432, //env var: PGPORT
@@ -26,14 +26,14 @@ pool.connect(function(err, client, done) {
     if(err) {
         return console.error('error fetching client from pool', err);
     }
-    client.query('SELECT $1::int AS number', ['1'], function(err, result) {
+    client.query("SELECT * FROM pg_catalog.pg_tables WHERE schemaname = 'public'", function(err, result) {
         //call `done()` to release the client back to the pool
         done();
 
         if(err) {
             return console.error('error running query', err);
         }
-        console.log(result.rows[0].number);
+        console.log(result.rowCount);
         //output: 1
     });
 });
@@ -47,3 +47,5 @@ pool.on('error', function (err, client) {
     // and so you might want to handle it and at least log it out
     console.error('idle client error', err.message, err.stack)
 })
+
+module.exports = pool;
