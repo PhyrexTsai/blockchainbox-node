@@ -7,5 +7,12 @@
  * 4. Web3 event producer, include web3 error handling
  * 
  */
+var transactionData = require('../db/models/transactionData.js');
 
-console.log("Hi");
+transactionData.read('test').then(function(result) {
+    // get result
+    console.log('read.rowCount: ' + result.rowCount);
+}).catch(function (err) {
+    // error handle
+        console.log(err.message, err.stack);
+});
