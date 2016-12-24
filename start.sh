@@ -1,4 +1,5 @@
 npm install nvm
+npm install kafka-node
 nvm use 6 && npm install && npm run start
 pm2 delete blockchainbox-worker
 pm2 delete blockchainbox-node
