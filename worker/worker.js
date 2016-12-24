@@ -31,6 +31,6 @@ transactionData.read('test').then(function(result) {
     console.log('read.rowCount: ' + result.rowCount);
 }).catch(function (err) {
     // error handle
-        console.log(err.message, err.stack);
+    console.log(err.message, err.stack);
 });
 
