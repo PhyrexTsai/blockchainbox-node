@@ -52,6 +52,6 @@ http://localhost:3000/ethereum/balance
 - pm2 with docker
     - http://pm2.keymetrics.io/docs/usage/docker-pm2-nodejs/
 
-- using worker on pm2
-    - worker.js
+- using kafka on pm2
+    - consumer.js
         - run kafka consumer
