@@ -7,6 +7,7 @@
  * 4. Web3 event producer, include web3 error handling
  * 
  */
+
 var kafka = require('kafka-node'),
     HighLevelProducer = kafka.HighLevelProducer,
     client = new kafka.Client("127.0.0.1:2181"),
@@ -23,7 +24,13 @@ producer.on('ready', function () {
 
 console.log("producer start");
 
+var transactionData = require('../db/models/transactionData.js');
 
-
-
+transactionData.read('test').then(function(result) {
+    // get result
+    console.log('read.rowCount: ' + result.rowCount);
+}).catch(function (err) {
+    // error handle
+        console.log(err.message, err.stack);
+});
 

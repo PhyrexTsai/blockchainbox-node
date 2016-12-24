@@ -13,6 +13,12 @@ Contains:
 ```
 brew install node
 
+-- install nvm
+npm install nvm
+
+-- install node version 6+
+nvm install 6.9.1
+
 -- will use pm2 for starting server
 npm install pm2 -g
 ```
