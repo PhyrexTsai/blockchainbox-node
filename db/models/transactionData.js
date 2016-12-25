@@ -23,6 +23,7 @@ TransactionData.prototype.create = function(entity) {
     return pool.query("SELECT nextval(pg_get_serial_sequence('transactiondata', 'txid')) as txId;").then(function(result) {
         // calculate txHash
         var txId = result.rows[0].txid;
+        console.log('txId: ' + txId );
         var txHash = keccak_256(txId);
         // console.log('txId: ' + txId + ', txHash: ' + txHash);
         return pool.query("INSERT INTO transactiondata (txid, txhash, data, status, network, txtimestamp) " +

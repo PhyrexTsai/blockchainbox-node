@@ -4,16 +4,50 @@ var kafka = require('kafka-node'),
     consumer = new HighLevelConsumer(
         client,
         [
-            { topic: 'InsertQueue' , partition: 0}
+            { topic: 'InsertQueue' , offset:40,partition: 0}
         ],
         {
-            autoCommit: false,
+            autoCommit: false,fromOffset: true 
         }
     );
 
+
 consumer.on('message', function (message) {
-    console.log(message);
+    console.log('message: ' + ( message.value));
+    console.log('type: ' + (typeof message.value));
+    console.log('message value: ' + JSON.parse(message.value));
+    var key = getKey(JSON.parse(message.value));
+    console.log('key: ' + key);
+    var value = JSON.parse(message.value)[key];
+    console.log('value: ' + JSON.stringify(value));
+    
+    
+    
+    
 });
+
+function getKey(obj) {
+  var result = "";
+  
+  for (var p in obj) {
+    if( obj.hasOwnProperty(p) ) {
+      result += p ;
+    } 
+  }              
+  return result;
+}
+
+
+function showObject(obj) {
+  var result = "";
+  
+  for (var p in obj) {
+    if( obj.hasOwnProperty(p) ) {
+      result += p + " , " + obj[p] + "\n";
+    } 
+  }              
+  return result;
+}
 
 
 
