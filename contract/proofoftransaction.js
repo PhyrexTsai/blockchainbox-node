@@ -1,3 +1,10 @@
+/**
+ * Need to unlock account first
+ *
+ * Run command below:
+ * geth attach
+ * personal.unlockAccount('0x2707318718f1c69ff55f5192cec64e117fdbbfde','password',600000);
+ */
 var Web3 = require('web3');
 var web3 = new Web3();
 var eth = web3.eth;
@@ -42,6 +49,7 @@ function contractControl(proofOfTransaction, eth) {
         gas: 4700000
     });
 
+    // 這邊要包外部的 callback 才可以帶入資料實作
     var getDataHash = proofOfTransaction.getDataHash(txHash, {
         from: web3.eth.coinbase,
         gas: 4700000
