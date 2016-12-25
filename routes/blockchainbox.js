@@ -1,4 +1,5 @@
 var express = require('express');
+var transactionData = require('../db/models/transactionData.js');
 var router = express.Router();
 
 /**
@@ -10,6 +11,15 @@ var router = express.Router();
  * 把資料存入，回傳 txHash
  */
 router.put('/v1/data', function(req, res, next) {
+    // implement create db
+    transactionData.create({}).then(function(result) {
+        // get result
+        // console.log('read.rowCount: ' + result.rowCount);
+    }).catch(function (err) {
+        // error handle
+        // console.log(err.message, err.stack);
+    });
+    // implement kafka producer
     res.json({'data': "OK"});
 });
 
