@@ -68,14 +68,15 @@ var proofOfTransaction = web3.eth.contract(proofOfTransactionABI).at(proofOfTran
 
 ProofOfTransaction.prototype.setData = function(txHash, data) {
     console.log('ProofOfTransaction.prototype.setData: txHash = ' + txHash + ', data = ' + data);
-    proofOfTransaction.setData(txHash, data, {from: web3.eth.coinbase, gas: 4700000});
+    var transactionHash = proofOfTransaction.setData(txHash, data, {from: web3.eth.coinbase, gas: 4700000});
+    return transactionHash;
 };
 
 ProofOfTransaction.prototype.getDataHash = function(txHash, data) {
     console.log('ProofOfTransaction.prototype.getDataHash: txHash = ' + txHash);
-    var result = proofOfTransaction.getDataHash(txHash, {from: web3.eth.coinbase, gas: 4700000});
-    
-    return result;
+    var transactionHash = proofOfTransaction.getDataHash(txHash, {from: web3.eth.coinbase, gas: 4700000});
+    // 這邊單純回應 transactionHash 所以需要用 transactionHash 去 filter 那邊聽是否 mine 到了
+    return transactionHash;
 };
 
 exports = module.exports = new ProofOfTransaction();
