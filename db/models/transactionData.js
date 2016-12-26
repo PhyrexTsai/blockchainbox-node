@@ -38,11 +38,12 @@ TransactionData.prototype.create = function(entity) {
     });
 };
 
-TransactionData.prototype.update = function() {
-
+TransactionData.prototype.update = function(entity) {
+    pool.query("UPDATE transactiondata SET " +
+        "transactionhash = $1, datahash = $2, status = $3, blocknumber = $4, blockhash = $5, fromAddress = $6 WHERE txhash = $7");
 };
 
-TransactionData.prototype.delete = function() {
+TransactionData.prototype.delete = function(txHash) {
 
 };
 
