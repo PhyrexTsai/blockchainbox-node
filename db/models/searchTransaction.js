@@ -10,16 +10,16 @@ SearchTransaction.prototype.read = function(txHash) {
     return pool.query('SELECT * FROM searchtransaction WHERE txHash = $1', [txHash]);
 };
 
-SearchTransaction.prototype.create = function(txHash) {
-    return pool.query('SELECT * FROM searchtransaction WHERE txHash = $1', [txHash]);
+SearchTransaction.prototype.create = function(entity) {
+    return null;
 };
 
-SearchTransaction.prototype.update = function() {
-
+SearchTransaction.prototype.update = function(entity) {
+    return null;
 };
 
-SearchTransaction.prototype.delete = function() {
-
+SearchTransaction.prototype.delete = function(id) {
+    return pool.query("DELETE searchtransaction WHERE id = $1", [id]);
 };
 
 exports = module.exports = new SearchTransaction();

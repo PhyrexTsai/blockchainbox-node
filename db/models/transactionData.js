@@ -21,11 +21,9 @@ TransactionData.prototype.read = function(txHash) {
 
 TransactionData.prototype.create = function(entity) {
     return pool.query("SELECT nextval(pg_get_serial_sequence('transactiondata', 'txid')) as txId;").then(function(result) {
-        // calculate txHash
         var txId = result.rows[0].txid;
-        console.log('txId: ' + txId );
         var txHash = keccak_256(txId);
-        // console.log('txId: ' + txId + ', txHash: ' + txHash);
+        console.log('txId: ' + txId + ', txHash: ' + txHash);
         return pool.query("INSERT INTO transactiondata (txid, txhash, data, status, network, txtimestamp) " +
             "values ($1, $2, $3, $4, $5, $6)",
             [txId, txHash, entity.data, 'UNAPPROVED', 'testnet', 'now']).then(function(){
@@ -39,6 +37,7 @@ TransactionData.prototype.create = function(entity) {
 };
 
 TransactionData.prototype.update = function(entity) {
+    // TODO 定義 status
     return pool.query("UPDATE transactiondata SET " +
         "transactionhash = $1, datahash = $2, status = $3, blocknumber = $4, blockhash = $5, fromAddress = $6 WHERE txhash = $7",
         [entity.transactionHash, entity.dataHash, entity.status, entity.blockNumber, entity.blockHash, entity.fromAddress, entity.txHash]);
