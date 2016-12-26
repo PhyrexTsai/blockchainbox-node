@@ -24,11 +24,8 @@ router.put('/v1/data', function(req, res, next) {
                 {topic: kafkaTopic, messages: JSON.stringify(message)}
             ];
             // Step 2: Put to Kafka queue
-            producer.on('ready', function () {
-                producer.send(payloads, function (err, data) {
-                    console.log(data);
-                });
-            });
+            // FIXME Kafka producer 要做 error handling，有錯要重送，這邊我測試如果沒有打開 Kafka 一樣會過
+            console.log(producer.send(payloads));
             res.json({'data': {'txHash': result}});
         }).catch(function (err) {
             // error handle
@@ -50,7 +47,12 @@ router.get('/v1/status', function(req, res, next) {
             console.log(result);
             // FIXME 這邊要看狀態把資料丟出去
             if (result.rowCount > 0) {
-                res.json({'data': {'status': result.rows[0].status}});
+                res.json({'data': {
+                    'txHash': result.rows[0].txHash,
+                    'status': result.rows[0].status,
+                    'txTimestamp': result.rows[0].txTimestamp,
+                    'tx': result.rows[0].transactionHash}
+                });
             } else {
                 res.json({'error': {'message': 'invalid txHash'}});
             }

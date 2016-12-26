@@ -16,6 +16,16 @@ function KafkaProducer() {
     
 }
 
+KafkaProducer.prototype.send = function(payloads) {
+    return producer.on('ready', function () {
+        return producer.send(payloads, function (err, data) {
+            // FIXME error handling
+            console.log(data);
+            return data;
+        });
+    });
+};
+
 exports = module.exports = new KafkaProducer();
 
 
