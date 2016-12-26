@@ -11,6 +11,7 @@ var kafkaTopic = "InsertQueue";
 /**
  * PUT data
  * 把資料存入，回傳 txHash
+ * @param data
  */
 router.put('/v1/data', function(req, res, next) {
     // Step 1: Insert TransactionData
@@ -34,10 +35,18 @@ router.put('/v1/data', function(req, res, next) {
     });
 });
 
-
+/**
+ * Get txHash information
+ * @param txHash
+ */
 router.get('/v1/status', function(req, res, next) {
     // TODO 查詢資料庫的資料
-    res.json({'data': 'PENDING'});
+    if (req.query.txHash != null && req.query.txHash != '') {
+        transactionData.read(req.query.txHash).then(function(result){
+            console.log(result);
+            res.json({'data': {'status': result.rows[0].status}});
+        });
+    }
 });
 
 module.exports = router;
