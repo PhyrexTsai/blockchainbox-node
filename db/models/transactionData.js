@@ -39,12 +39,13 @@ TransactionData.prototype.create = function(entity) {
 };
 
 TransactionData.prototype.update = function(entity) {
-    pool.query("UPDATE transactiondata SET " +
-        "transactionhash = $1, datahash = $2, status = $3, blocknumber = $4, blockhash = $5, fromAddress = $6 WHERE txhash = $7");
+    return pool.query("UPDATE transactiondata SET " +
+        "transactionhash = $1, datahash = $2, status = $3, blocknumber = $4, blockhash = $5, fromAddress = $6 WHERE txhash = $7",
+        [entity.transactionHash, entity.dataHash, entity.status, entity.blockNumber, entity.blockHash, entity.fromAddress, entity.txHash]);
 };
 
 TransactionData.prototype.delete = function(txHash) {
-
+    return pool.query("DELETE transactiondata WHERE txHash = $1", [txHash]);
 };
 
 // 這邊我打算把所有 access db 的東西都做成 singleton，目的是同一時間應該只允許一個實例在讀寫才合理
