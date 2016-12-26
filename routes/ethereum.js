@@ -1,3 +1,4 @@
+// TODO 這邊要加上 deploy contract, compile contract 等 API
 var express = require('express');
 var Web3 = require('web3');
 var web3 = new Web3();
