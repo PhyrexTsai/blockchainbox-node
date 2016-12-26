@@ -64,8 +64,10 @@ var proofOfTransactionABI = [{
 
 var proofOfTransactionContractAddress = '0xD0F96Ba2FEDB74b92343De6ba3f1b3D55076B2B2';
 
+// Reference: https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethcontract
 var proofOfTransaction = web3.eth.contract(proofOfTransactionABI).at(proofOfTransactionContractAddress);
 
+// Reference: https://github.com/ethereum/wiki/wiki/JavaScript-API#contract-methods
 ProofOfTransaction.prototype.setData = function(txHash, data) {
     console.log('ProofOfTransaction.prototype.setData: txHash = ' + txHash + ', data = ' + data);
     var transactionHash = proofOfTransaction.setData(txHash, data, {from: web3.eth.coinbase, gas: 4700000});
@@ -77,6 +79,17 @@ ProofOfTransaction.prototype.getDataHash = function(txHash, data) {
     var transactionHash = proofOfTransaction.getDataHash(txHash, {from: web3.eth.coinbase, gas: 4700000});
     // 這邊單純回應 transactionHash 所以需要用 transactionHash 去 filter 那邊聽是否 mine 到了
     return transactionHash;
+};
+
+// Reference: https://github.com/ethereum/wiki/wiki/JavaScript-API#contract-events
+ProofOfTransaction.prototype.getDataHashEvent = function() {
+    console.log('ProofOfTransaction.prototype.getDataHashEvent');
+    return proofOfTransaction.getDataHashEvent({});
+};
+
+ProofOfTransaction.prototype.setDataHashEvent = function() {
+    console.log('ProofOfTransaction.prototype.setDataHashEvent')
+    return proofOfTransaction.setDataHashEvent({});
 };
 
 exports = module.exports = new ProofOfTransaction();
