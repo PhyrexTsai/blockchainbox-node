@@ -26,11 +26,11 @@ router.put('/v1/data', function(req, res, next) {
                 console.log(data);
             });
         });
-        res.json({'txHash': result});
+        res.json({'data':{'txHash': result}});
     }).catch(function (err) {
         // error handle
         console.log(err.message, err.stack);
-        res.json({'err': err.message})
+        res.json({'error': {'message': err.message}});
     });
 });
 
