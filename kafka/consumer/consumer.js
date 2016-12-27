@@ -48,6 +48,4 @@ function showObject(obj) {
   return result;
 }
 
-
-
 console.log("consumer start");
