@@ -1,10 +1,15 @@
 // TODO 這邊還要補齊 /v1/status，與測試程式
 var express = require('express');
 var transactionData = require('../db/models/transactionData.js');
+var searchTransaction = require('../db/models/searchTransaction.js');
 var producer = require('../kafka/producer/producer.js');
+var Web3 = require('web3');
+var web3 = new Web3();
 var router = express.Router();
 
 var kafkaTopic = "InsertQueue";
+web3.setProvider(new web3.providers.HttpProvider(process.env.ENODE_BASE || 'http://localhost:8545'));
+
 /**
  * 把基本服務的 API 都放在這邊
  */
@@ -46,7 +51,10 @@ router.get('/v1/status', function(req, res, next) {
         transactionData.read(req.query.txHash).then(function(result){
             console.log(result);
             // FIXME 這邊要看狀態把資料丟出去
+            var transaction = {txHash: req.query.txHash, fromAddress: web3.eth.coinbase};
             if (result.rowCount > 0) {
+                transaction[status] = result.rows[0].status;
+                searchTransaction.create(transaction);
                 res.json({'data': {
                     'txHash': result.rows[0].txHash,
                     'status': result.rows[0].status,
@@ -54,6 +62,8 @@ router.get('/v1/status', function(req, res, next) {
                     'tx': result.rows[0].transactionHash}
                 });
             } else {
+                transaction[status] = 'ERROR';
+                searchTransaction.create(transaction);
                 res.json({'error': {'message': 'invalid txHash'}});
             }
         }).catch(function (err) {

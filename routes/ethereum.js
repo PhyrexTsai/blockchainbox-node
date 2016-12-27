@@ -5,19 +5,22 @@ var web3 = new Web3();
 var router = express.Router();
 
 web3.setProvider(new web3.providers.HttpProvider(process.env.ENODE_BASE || 'http://localhost:8545'));
-var coinbase = web3.eth.coinbase;
 
 /**
  * GET ethereum coinbase
  */
 router.get('/coinbase', function(req, res, next) {
-  res.json({'data' :{'coinbase': coinbase}});
+  res.json({'data' :{'coinbase': web3.eth.coinbase}});
 });
 
 /**
  * GET ethereum account balance
  */
 router.get('/balance', function(req, res, next) {
+  var coinbase = web3.eth.coinbase;
+  if (req.query.address != null && req.query.address != '' && req.query.address != undefined) {
+    coinbase = req.query.address;
+  }
   var balance = web3.fromWei(web3.eth.getBalance(coinbase), "ether").toString(10) + ' ether';
   res.json({'data' :{'coinbase': coinbase, 'balance': balance}});
 });
@@ -58,6 +61,18 @@ router.get('/transaction', function(req, res, next) {
     res.json({'error': {'code': 100, 'message': 'txHash is null'}});
   }
   res.json({'data' :{"txHash": txHash}});
+});
+
+/**
+ * GET transactionReceipt
+ * https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethgettransactionreceipt
+ */
+router.get('/transactionReceipt', function(req, res, next) {
+  var transactionHash = req.query.transactionHash;
+  if (transactionHash == null || transactionHash == '' || transactionHash == undefined) {
+    res.json({'error': {'code': 102, 'message': 'transactionHash is null'}});
+  }
+  res.json({'data': web3.eth.getTransactionReceipt(transactionHash)});
 });
 
 /**
