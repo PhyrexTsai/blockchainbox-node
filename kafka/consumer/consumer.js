@@ -1,3 +1,5 @@
+var ProofOfTransaction = require('../../ethereum/contract/proofoftransaction.js');
+
 var kafka = require('kafka-node'),
     HighLevelConsumer = kafka.HighLevelConsumer,
     client = new kafka.Client('127.0.0.1:2181'),
@@ -11,7 +13,6 @@ var kafka = require('kafka-node'),
         }
     );
 
-
 consumer.on('message', function (message) {
     console.log('message: ' + ( message.value));
     console.log('type: ' + (typeof message.value));
@@ -20,10 +21,9 @@ consumer.on('message', function (message) {
     console.log('key: ' + key);
     var value = JSON.parse(message.value)[key];
     console.log('value: ' + JSON.stringify(value));
-    
-    
-    
-    
+
+    //inset to blockchain
+    ProofOfTransaction.setData(key, JSON.stringify(value));
 });
 
 function getKey(obj) {
@@ -36,7 +36,6 @@ function getKey(obj) {
   }              
   return result;
 }
-
 
 function showObject(obj) {
   var result = "";
