@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
+var developers = require('./routes/developers');
 // TODO 這邊要加上 whitelist 來控管誰可以對這個 enode 下指令
 var ethereum = require('./routes/ethereum');
 var api = require('./routes/api');
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
+app.use('/developers', developers);
 app.use('/ethereum', ethereum);
 app.use('/api', api);
 
