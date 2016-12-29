@@ -4,14 +4,20 @@ var txHash = "123450";
 var data = "678900";
 
 // setData to ProofOfTransaction contract
-console.log('setData: ' + ProofOfTransaction.setData(txHash, data));
+var setDataTransactionHash = ProofOfTransaction.setData(txHash, data)
+console.log('setData: ' + setDataTransactionHash);
 /* getDataHash response
 
 0x9b3e95fbc3a10c04ad48cc83659b7e2eb1586f50b6e72930e39c15209755f7eb
 */
+ProofOfTransaction.filterWatch(setDataTransactionHash, function(transctionInfo, blockInfo) {
+    console.log('transaction info: ', transctionInfo);
+    console.log('block info: ', blockInfo);
+});
 
 // getDataHash from ProofOfTransaction contract
-console.log('getDataHash: ' + ProofOfTransaction.getDataHash(txHash));
+var getDataHashTransactionHash = ProofOfTransaction.getDataHash(txHash);
+console.log('getDataHash: ' + getDataHashTransactionHash);
 /* getDataHash response
 
 0xb85e556e8dd9af968f433c957838232cfec93ec19f70af539a9a715217d49ca9
@@ -20,7 +26,10 @@ console.log('getDataHash: ' + ProofOfTransaction.getDataHash(txHash));
 // listen event from blockchain of ProofOfTransaction contract
 var setDataHashEvent = ProofOfTransaction.setDataHashEvent();
 setDataHashEvent.watch(function(err, result) {
-    console.log(result);
+    if (result.transactionHash == setDataTransactionHash) {
+        console.log('setDataHashEvent: ', result);
+        setDataHashEvent.stopWatching();
+    }
 });
 /* setDataHashEvent response
 
@@ -50,7 +59,10 @@ time 寫入 TransactionData updateTimestamp
 // listen event from blockchain of ProofOfTransaction contract
 var getDataHashEvent = ProofOfTransaction.getDataHashEvent();
 getDataHashEvent.watch(function(err, result) {
-    console.log(result);
+    if (result.transactionHash == getDataHashTransactionHash) {
+        console.log('getDataHashEvent: ', result);
+        getDataHashEvent.stopWatching();
+    }
 });
 /* getDataHashEvent response
 

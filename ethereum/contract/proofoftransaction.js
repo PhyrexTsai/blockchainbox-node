@@ -92,4 +92,23 @@ ProofOfTransaction.prototype.setDataHashEvent = function() {
     return proofOfTransaction.setDataHashEvent({});
 };
 
+ProofOfTransaction.prototype.filterWatch = function(transactionHash, callback) {
+    var filter = web3.eth.filter('latest');
+    filter.watch(function(err, result) {
+        //console.log("latest: ", result);
+        var blockInfo = web3.eth.getBlock(result);
+        //console.log("block: ", info);
+        if (blockInfo.transactions > 0) {
+            blockInfo.transactions.forEach(function(tx) {
+                if (tx == transactionHash) {
+                    var transactionInfo = web3.eth.getTransaction(tx);
+                    // save to database
+                    callback(transactionInfo, blockInfo);
+                    filter.stopWatching();
+                }
+            });
+        }
+    });
+};
+
 exports = module.exports = new ProofOfTransaction();
