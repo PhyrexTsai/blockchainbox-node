@@ -1,4 +1,5 @@
 var ProofOfTransaction = require('../ethereum/contract/proofoftransaction.js');
+var EventListener = require('../ethereum/listener/eventlistener.js');
 
 var txHash = "123450";
 var data = "678900";
@@ -10,7 +11,7 @@ console.log('setData: ' + setDataTransactionHash);
 
 0x9b3e95fbc3a10c04ad48cc83659b7e2eb1586f50b6e72930e39c15209755f7eb
 */
-ProofOfTransaction.filterWatch(setDataTransactionHash, function(transctionInfo, blockInfo) {
+EventListener.filterWatch(setDataTransactionHash, function(transctionInfo, blockInfo) {
     console.log('transaction info: ', transctionInfo);
     console.log('block info: ', blockInfo);
 });
