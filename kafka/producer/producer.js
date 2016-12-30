@@ -16,13 +16,7 @@ function KafkaProducer() {
     
 }
 
-KafkaProducer.prototype.send = function(key, data) {
-    message = {};
-    message[key] = data;
-
-    payloads = [
-        { topic: 'InsertQueue', messages: JSON.stringify(message)}
-    ];
+KafkaProducer.prototype.send = function(payloads) {
 
     return producer.on('ready', function () {
         return producer.send(payloads, function (err, data) {

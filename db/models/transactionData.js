@@ -11,6 +11,10 @@ var keccak_256 = require('js-sha3').keccak_256;
 
 function TransactionData() {}
 
+TransactionData.prototype.UNAPPROVED = 'UNAPPROVED';
+TransactionData.prototype.PENDING = 'PENDING';
+TransactionData.prototype.APPROVED = 'APPROVED';
+
 TransactionData.prototype.readAll = function() {
     return pool.query('SELECT * FROM transactiondata');
 };
@@ -47,5 +51,16 @@ TransactionData.prototype.delete = function(txHash) {
     return pool.query("DELETE transactiondata WHERE txHash = $1", [txHash]);
 };
 
+TransactionData.prototype.updateTransactionHashByTxnHash = function(txnHash, transactionHash, status){
+    return pool.query("UPDATE transactiondata SET " +
+        "transactionhash = $2, status = $3 WHERE txhash = $1",
+        [txnHash, transactionHash, status]);
+};
+
+TransactionData.prototype.updateToApproved = function(txnHash, datahash){
+    return pool.query("UPDATE transactiondata SET " +
+        "datahash = $3, status = $2 WHERE txhash = $1",
+        [txnHash, 'APPROVED', datahash]);
+};
 // 這邊我打算把所有 access db 的東西都做成 singleton，目的是同一時間應該只允許一個實例在讀寫才合理
 exports = module.exports = new TransactionData();
