@@ -11,8 +11,9 @@ console.log('setData: ' + setDataTransactionHash);
 
 0x9b3e95fbc3a10c04ad48cc83659b7e2eb1586f50b6e72930e39c15209755f7eb
 */
-EventListener.filterWatch(setDataTransactionHash, function(transctionInfo, blockInfo) {
+EventListener.filterWatch(setDataTransactionHash, function(transctionInfo, transactionReceiptInfo, blockInfo) {
     console.log('transaction info: ', transctionInfo);
+    console.log('transaction receipt info: ', transactionReceiptInfo);
     console.log('block info: ', blockInfo);
 });
 

@@ -16,13 +16,22 @@ EventListener.prototype.filterWatch = function(transactionHash, callback) {
             blockInfo.transactions.forEach(function(tx) {
                 if (tx == transactionHash) {
                     var transactionInfo = web3.eth.getTransaction(tx);
+                    var transactionReceiptInfo = web3.eth.getTransactionReceipt(tx);
                     // save to database
-                    callback(transactionInfo, blockInfo);
+                    callback(transactionInfo, transactionReceiptInfo, blockInfo);
                     filter.stopWatching();
                 }
             });
         }
     });
+};
+
+EventListener.prototype.getTransaction = function(transactionHash) {
+    return web3.eth.getTransaction(tx);
+};
+
+EventListener.prototype.getTransactionReceipt = function(transactionHash) {
+    return web3.eth.getTransactionReceipt(transactionHash);
 };
 
 exports = module.exports = new EventListener();
