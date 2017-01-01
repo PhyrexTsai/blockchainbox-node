@@ -28,9 +28,9 @@ var kafka = require('kafka-node'),
 router.put('/v1/data', function(req, res, next) {
     // Step 1: Insert TransactionData
     if (req.body.data != null && req.body.data != '') {
-        transactionData.create({"data": JSON.stringify(req.body.data)}).then(function (result) {
+        transactionData.create({"data": req.body.data.toString()}).then(function (result) {
             // 寫入 kafka            
-            message[result] = JSON.stringify(req.body.data);
+            message[result] = req.body.data.toString();
 
             var payloads = [
                 {topic: kafkaTopic, messages: JSON.stringify(message)}
