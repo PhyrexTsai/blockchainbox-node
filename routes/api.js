@@ -7,8 +7,14 @@ var Web3 = require('web3');
 var web3 = new Web3();
 var router = express.Router();
 
-var kafkaTopic = "InsertQueue";
+var kafkaTopic = 'InsertQueue';
 web3.setProvider(new web3.providers.HttpProvider(process.env.ENODE_BASE || 'http://localhost:8545'));
+
+var kafka = require('kafka-node'),
+                HighLevelProducer = kafka.HighLevelProducer,
+                client = new kafka.Client("127.0.0.1:2181"),
+                producer = new HighLevelProducer(client),
+                message = {};
 
 /**
  * 把基本服務的 API 都放在這邊
@@ -22,15 +28,16 @@ web3.setProvider(new web3.providers.HttpProvider(process.env.ENODE_BASE || 'http
 router.put('/v1/data', function(req, res, next) {
     // Step 1: Insert TransactionData
     if (req.body.data != null && req.body.data != '') {
-        transactionData.create({data: JSON.stringify(req.body.data)}).then(function (result) {
-            // 寫入 kafka
-            var message = {txHash: result};
+        transactionData.create({"data": JSON.stringify(req.body.data)}).then(function (result) {
+            // 寫入 kafka            
+            message[result] = {"data": JSON.stringify(req.body.data)};
+
             var payloads = [
                 {topic: kafkaTopic, messages: JSON.stringify(message)}
             ];
             // Step 2: Put to Kafka queue
             // FIXME Kafka producer 要做 error handling，有錯要重送，這邊我測試如果沒有打開 Kafka 一樣會過
-            console.log(producer.send(payloads));
+            producer.send(payloads);
             res.json({'data': {'txHash': result}});
         }).catch(function (err) {
             // error handle
