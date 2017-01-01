@@ -30,7 +30,7 @@ router.put('/v1/data', function(req, res, next) {
     if (req.body.data != null && req.body.data != '') {
         transactionData.create({"data": JSON.stringify(req.body.data)}).then(function (result) {
             // 寫入 kafka            
-            message[result] = {"data": JSON.stringify(req.body.data)};
+            message[result] = JSON.stringify(req.body.data);
 
             var payloads = [
                 {topic: kafkaTopic, messages: JSON.stringify(message)}
