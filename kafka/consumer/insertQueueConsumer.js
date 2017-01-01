@@ -11,7 +11,7 @@ var kafka = require('kafka-node'),
             { topic: 'InsertQueue' , partition: 0}
         ],
         {
-            autoCommit: true
+            autoCommit: false
         }
     ),
     HighLevelProducer = kafka.HighLevelProducer,
@@ -41,6 +41,14 @@ consumer.on('message', function (message) {
         // Step 2: Put to Kafka queue
         // FIXME Kafka producer 要做 error handling，有錯要重送，這邊我測試如果沒有打開 Kafka 一樣會過
         producer.send(payloads);
+        // commit offset
+        consumer.commit(function(err, data){
+            if (!err) {
+                console.log('[CONSUMER] commit: ', data);
+            } else {
+                console.log(err);
+            }
+        });
     }).catch(function (err) {
         // error handle
         console.log(err.message, err.stack);
