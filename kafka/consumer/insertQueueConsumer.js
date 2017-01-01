@@ -44,7 +44,7 @@ consumer.on('message', function (message) {
     }).catch(function (err) {
         // error handle
         console.log(err.message, err.stack);
-    });;
+    });
     //transactionData.updateTransactionHashByTxnHash(key, transactionHash, transactionData.PENDING);
 
     // FIXME Point 1
@@ -104,4 +104,4 @@ function getKey(obj) {
   return result;
 }
 
-console.log("consumer start");
+console.log("[START CONSUMER] InsertQueue");
