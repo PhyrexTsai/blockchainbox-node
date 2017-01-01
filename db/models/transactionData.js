@@ -54,8 +54,8 @@ TransactionData.prototype.delete = function(txHash) {
 
 TransactionData.prototype.updateByTransactionHash = function(entity) {
     return pool.query("UPDATE transactiondata SET " +
-        "datahash = $1, status = $2, blocknumber = $3, blockhash = $4, fromAddress = $5, updateTimestamp = now() WHERE transactionHash = $6",
-        [entity.dataHash, entity.status, entity.blockNumber, entity.blockHash, entity.fromAddress, entity.transactionHash]);
+        "status = $1, blocknumber = $2, blockhash = $3, updateTimestamp = now() WHERE transactionHash = $4",
+        [entity.status, entity.blockNumber, entity.blockHash, entity.transactionHash]);
 };
 
 TransactionData.prototype.updateDataHash = function(entity) {
