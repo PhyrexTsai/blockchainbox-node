@@ -23,6 +23,8 @@ var kafka = require('kafka-node'),
 /**
  * PUT data
  * 把資料存入，回傳 txHash
+ * Example:
+ *   curl --request PUT "http://localhost:3000/api/v1/data" --data '{"data":"your data here"}' -H "Content-Type: application/json"
  * @param data
  */
 router.put('/v1/data', function(req, res, next) {
@@ -51,6 +53,8 @@ router.put('/v1/data', function(req, res, next) {
 
 /**
  * Get txHash information
+ * Example:
+ *   curl --request GET "http://localhost:3000/api/v1/status?txHash=13600b294191fc92924bb3ce4b969c1e7e2bab8f4c93c3fc6d0a51733df3c060"
  * @param txHash
  */
 router.get('/v1/status', function(req, res, next) {
