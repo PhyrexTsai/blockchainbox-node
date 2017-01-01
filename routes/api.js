@@ -60,17 +60,24 @@ router.get('/v1/status', function(req, res, next) {
             // FIXME 這邊要看狀態把資料丟出去
             var transaction = {txHash: req.query.txHash, fromAddress: web3.eth.coinbase};
             if (result.rowCount > 0) {
-                transaction[status] = result.rows[0].status;
-                searchTransaction.create(transaction);
+                //transaction[status] = result.rows[0].status;
+                //searchTransaction.create(transaction);
                 res.json({'data': {
-                    'txHash': result.rows[0].txHash,
+                    'txHash': result.rows[0].txhash,
                     'status': result.rows[0].status,
-                    'txTimestamp': result.rows[0].txTimestamp,
-                    'tx': result.rows[0].transactionHash}
+                    'transactionTimestamp': result.rows[0].txtimestamp,
+                    'updateTimestamp': result.rows[0].updatetimestamp,
+                    'transactionHash': result.rows[0].transactionhash,
+                    'dataHash': result.rows[0].datahash,
+                    'blockNumber': result.rows[0].blocknumber,
+                    'blockHash': result.rows[0].blockhash,
+                    'gasUsed': result.rows[0].gas,
+                    'network': result.rows[0].network
+                    }
                 });
             } else {
-                transaction[status] = 'ERROR';
-                searchTransaction.create(transaction);
+                //transaction[status] = 'ERROR';
+                //searchTransaction.create(transaction);
                 res.json({'error': {'message': 'invalid txHash'}});
             }
         }).catch(function (err) {

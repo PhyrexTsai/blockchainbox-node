@@ -58,7 +58,8 @@ consumer.on('message', function (message) {
             status: txStatus,
             blockNumber: transactionInfo.blockNumber,
             blockHash: transactionInfo.blockHash,
-            fromAddress: transactionInfo.from
+            fromAddress: transactionInfo.from,
+            gas: transactionReceiptInfo.gasUsed
         };
 
         transactionData.updateByTransactionHash(entity).then(function(result) {
