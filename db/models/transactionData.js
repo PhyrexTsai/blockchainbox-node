@@ -30,7 +30,7 @@ TransactionData.prototype.create = function(entity) {
         console.log('txId: ' + txId + ', txHash: ' + txHash);
         return pool.query("INSERT INTO transactiondata (txid, txhash, data, status, network, txtimestamp) " +
             "values ($1, $2, $3, $4, $5, $6)",
-            [txId, txHash, entity.data, 'UNAPPROVED', 'testnet', 'now']).then(function(){
+            [txId, txHash, entity.data, TransactionData.prototype.UNAPPROVED, 'testnet', 'now']).then(function(){
             return txHash;
         }).catch(function (err) {
             console.log(err.message, err.stack);
