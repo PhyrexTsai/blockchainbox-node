@@ -52,6 +52,22 @@ router.put('/v1/data', function(req, res, next) {
 });
 
 /**
+ * Get All Data
+ * 拿table中全部的資料，初始化實用
+ */
+router.get('/v1/all', function(req, res, next) {
+    transactionData.readAll().then(function(result){
+       // console.log('typeof: ' + typeof result);
+       // console.log('object: ' + JSON.parse(JSON.stringify(result)));
+       res.json(result.rows);
+    })
+    .catch(function (err) {
+        console.log(err.message, err.stack);
+        res.json({'error': {'message': err.message}});
+    });
+    
+});
+/**
  * Get txHash information
  * Example:
  *   curl --request GET "http://localhost:3000/api/v1/status?txHash=13600b294191fc92924bb3ce4b969c1e7e2bab8f4c93c3fc6d0a51733df3c060"
