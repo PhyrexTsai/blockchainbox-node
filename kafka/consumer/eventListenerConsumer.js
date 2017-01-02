@@ -30,7 +30,7 @@ consumer.on('message', function (message) {
                 fromAddress: result.args.from
             };
             transactionData.updateDataHash(entity).then(function(result) {
-                console.log('[SUCCESS] TransactionData.updateByTransactionHash: ', entity);
+                console.log('[SUCCESS] TransactionData.updateDataHash: ', entity);
             }).catch(function (err) {
                 // error handle
                 console.log(err.message, err.stack);

@@ -4,18 +4,8 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Blockchainbox' });
+  res.render('index', { title: 'Proof Of Transaction' });
 });
-// $(function(){				
-// 	$('#send').click(function(e){
-// 	    e.preventDefault();
-// 	    alert('123');
-	    
-		
-// 	});				
-// });
-
-
 
 module.exports = router;
 
