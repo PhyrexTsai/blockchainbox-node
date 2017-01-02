@@ -8,8 +8,26 @@ block content
   br
   .center-section
    ul.input-list.style-2.clearfix
-    li: input(type="text",placeholder="insert data to blockchain",size="250",maxlength="250")
+    li: input(id="inputData",type="text",placeholder="insert data to blockchain",size="250",maxlength="250")
     br
     br
-    li: input.myButton(type="button",value="Send" )
+    li: input.myButton(id="send",type="button",value="Send" )
+  script(type="text/javascript").
+   $(function(){				
+    $('#send').click(function(e){
+     e.preventDefault();
+     var data=$('#inputData').val();
+     data={"data":data}; 
+     $.ajax({
+      type: 'PUT',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      url: 'http://localhost:3000/api/v1/data',						
+      success: function(data) {
+       console.log('success');
+       console.log(JSON.stringify(data));
+      }
+     });
+    });				
+   });
    
