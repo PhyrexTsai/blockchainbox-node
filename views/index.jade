@@ -12,6 +12,9 @@ block content
     br
     br
     li: input.myButton(id="send",type="button",value="Send" )
+    br
+    br
+    p(id="txnHash")
   script(type="text/javascript").
    $(function(){				
     $('#send').click(function(e){
@@ -24,8 +27,8 @@ block content
       contentType: 'application/json',
       url: 'http://localhost:3000/api/v1/data',						
       success: function(data) {
-       console.log('success');
-       console.log(JSON.stringify(data));
+       var object = JSON.parse(JSON.stringify(data));
+       $('#txnHash').text('your txHash: ' + object.data.txHash);
       }
      });
     });				
