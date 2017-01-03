@@ -18,11 +18,11 @@ block content
     table.table-fill(id="dataTable")
      thead
       tr
-       th.text-left txHash
-       th.text-left transactionHash
-       th.text-left data
-       th.text-left timestamp
-       th.text-left status
+       th.text-left TxHash
+       th.text-left TransactionHash
+       th.text-left DataHash
+       th.text-left Timestamp
+       th.text-left Status
      tbody.table-hover
   script(type="text/javascript").
    $(function(){				
@@ -52,7 +52,7 @@ block content
         var tableContent = '<tr>';
         tableContent += "<td>" + data[index].txhash + "</td>";
         tableContent += "<td>" + data[index].transactionhash + "</td>";
-        tableContent += "<td>" + data[index].data + "</td>";
+        tableContent += "<td>" + data[index].datahash + "</td>";
         tableContent += "<td>" + data[index].txtimestamp + "</td>";
         tableContent += "<td>" + data[index].status + "</td>";
         tableContent += '</tr>';
