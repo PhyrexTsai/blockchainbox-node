@@ -2,4 +2,63 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Submit data and have it store by SHA3 in the Ethereum blockchain
+  br
+  .center-section
+   ul.input-list.style-2.clearfix
+    li: input(id="inputData",type="text",placeholder="insert data to blockchain",size="250",maxlength="250")
+    br
+    br
+    li: input.myButton(id="send",type="button",value="Send" )
+    br
+    br
+    p(id="txnHash")
+    br
+    br
+    table.table-fill(id="dataTable")
+     thead
+      tr
+       th.text-left TxHash
+       th.text-left TransactionHash
+       th.text-left DataHash
+       th.text-left Timestamp
+       th.text-left Status
+     tbody.table-hover
+  script(type="text/javascript").
+   $(function(){				
+    $('#send').click(function(e){
+     e.preventDefault();
+     var data=$('#inputData').val();
+     data={"data":data}; 
+     $.ajax({
+      type: 'PUT',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      url: 'http://localhost:3000/api/v1/data',						
+      success: function(data) {
+       var object = JSON.parse(JSON.stringify(data));
+       $('#txnHash').text('your txHash: ' + object.data.txHash);
+      }
+     });
+    });
+    $.ajax({
+      type: 'GET',
+      contentType: 'application/json',
+      url: 'http://localhost:3000/api/v1/all',						
+      success: function(data) {
+       console.log(data);
+       
+       for (index = 0; index < data.length; index++) {
+        var tableContent = '<tr>';
+        tableContent += "<td>" + data[index].txhash + "</td>";
+        tableContent += "<td>" + data[index].transactionhash + "</td>";
+        tableContent += "<td>" + data[index].datahash + "</td>";
+        tableContent += "<td>" + data[index].txtimestamp + "</td>";
+        tableContent += "<td>" + data[index].status + "</td>";
+        tableContent += '</tr>';
+        $('#dataTable tr:last').after(tableContent);
+       } 
+      }
+     });
+   });
+   

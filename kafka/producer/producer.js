@@ -17,11 +17,10 @@ function KafkaProducer() {
 }
 
 KafkaProducer.prototype.send = function(payloads) {
-    return producer.on('ready', function () {
-        return producer.send(payloads, function (err, data) {
-            // FIXME error handling
+    producer.on('ready', function () {
+        producer.send(payloads, function (err, data) {
+            console.log(err);
             console.log(data);
-            return data;
         });
     });
 };

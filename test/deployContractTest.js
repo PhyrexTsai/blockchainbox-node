@@ -3,7 +3,7 @@
  * 
  * Run command below: 
  * geth attach
- * personal.unlockAccount('0x2707318718f1c69ff55f5192cec64e117fdbbfde','password',600000);
+ * personal.unlockAccount('4c25526a6b567c067396bd1fe0a1936117875436','password',600000);
  */
 var Web3 = require('web3');
 var web3 = new Web3();

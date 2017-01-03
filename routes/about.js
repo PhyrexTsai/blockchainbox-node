@@ -1,13 +1,10 @@
-// TODO 建置 web page
+// TODO 建置 web page for Proof of transaction document
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+/* GET about page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Proof Of Transaction' });
+    res.render('about', { title: 'Introduce' });
 });
 
 module.exports = router;
-
-
-

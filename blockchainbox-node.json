@@ -1,17 +1,5 @@
 {
   apps : [{
-    name        : "blockchainbox-worker",
-    script      : "./worker/worker.js",
-    watch       : true,
-    env         : {
-      "NODE_ENV"          : "development",
-      "ENODE_BASE"        : "http://localhost:8545",
-      "POSTGRESQL_HOST"   : "localhost",
-      "POSTGRESQL_PORT"   : 5432,
-      "KAFKA_HOST"        : "localhost",
-      "KAFKA_PORT"        : 9092
-    }
-  },{
     name       : "blockchainbox-node",
     script     : "./bin/www",
     watch       : true,
@@ -23,5 +11,30 @@
       "KAFKA_HOST"        : "localhost",
       "KAFKA_PORT"        : 9092
     }
-  }]
+  },{
+    name       : "blockchainbox-consumer-insertQueue",
+    script     : "./kafka/consumer/insertQueueConsumer.js",
+    watch       : true,
+    env: {
+      "NODE_ENV": "development",
+      "ENODE_BASE"        : "http://localhost:8545",
+      "POSTGRESQL_HOST"   : "localhost",
+      "POSTGRESQL_PORT"   : 5432,
+      "KAFKA_HOST"        : "localhost",
+      "KAFKA_PORT"        : 9092
+    }
+  },{
+    name       : "blockchainbox-consumer-eventListener",
+    script     : "./kafka/consumer/eventListenerConsumer.js",
+    watch       : true,
+    env: {
+      "NODE_ENV": "development",
+      "ENODE_BASE"        : "http://localhost:8545",
+      "POSTGRESQL_HOST"   : "localhost",
+      "POSTGRESQL_PORT"   : 5432,
+      "KAFKA_HOST"        : "localhost",
+      "KAFKA_PORT"        : 9092
+    }
+  }
+  ]
 }

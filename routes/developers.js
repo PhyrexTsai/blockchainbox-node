@@ -1,13 +1,10 @@
-// TODO 建置 web page
+// TODO 建置 web page for API document
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+/* GET API page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Proof Of Transaction' });
+    res.render('developers', { title: 'API' });
 });
 
 module.exports = router;
-
-
-
