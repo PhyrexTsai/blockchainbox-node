@@ -36,6 +36,12 @@ cd blockchainbox-node
 -- start service with pm2
 ./start.sh
 ```
+### Unlock your account
+```
+geth attach
+personal.unlockAccount('4c25526a6b567c067396bd1fe0a1936117875436','password',600000);
+ 
+ ```
 
 ### Access on localhost
 ```
