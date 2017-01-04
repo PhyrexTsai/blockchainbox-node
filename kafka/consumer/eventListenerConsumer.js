@@ -21,7 +21,8 @@ consumer.on('message', function (message) {
     // listen setDataHashEvent from blockchain of ProofOfTransaction contract
     var setDataHashEvent = ProofOfTransaction.setDataHashEvent();
     setDataHashEvent.watch(function(err, result) {
-        if (!err && result.transactionHash == message.value) {
+        //console.log('1212121212128590348590348590')
+        if (result.transactionHash == message.value) {
             console.log('setDataHashEvent: ', result);
             var entity = {
                 txHash: result.args.txHash,
@@ -37,16 +38,16 @@ consumer.on('message', function (message) {
             });
             setDataHashEvent.stopWatching();
         } else {
-            console.log(err);
+            console.log('error: ' + err);
             setDataHashEvent.stopWatching();
         }
     });
 
     //listen blockchain
     EventListener.filterWatch(message.value, function(transactionInfo, transactionReceiptInfo, blockInfo) {
-        // console.log('transaction info: ', transactionInfo);
-        // console.log('transaction receipt info: ', transactionReceiptInfo);
-        // console.log('block info: ', blockInfo);
+         console.log('transaction info: ', transactionInfo);
+         console.log('transaction receipt info: ', transactionReceiptInfo);
+         console.log('block info: ', blockInfo);
 
         var txStatus = transactionData.APPROVED;
         if (transactionInfo.gas == transactionReceiptInfo.gasUsed) {
