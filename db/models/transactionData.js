@@ -17,7 +17,6 @@ TransactionData.prototype.APPROVED = 'APPROVED';
 TransactionData.prototype.FAILED = 'FAILED';
 
 TransactionData.prototype.readAll = function() {
-    console.log('123');
     return pool.query('SELECT * FROM transactiondata');
 };
 

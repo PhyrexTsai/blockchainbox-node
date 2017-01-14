@@ -10,8 +10,9 @@ Contract.prototype.read = function(id) {
     return pool.query('SELECT * FROM contract WHERE id = $1', [id]);
 };
 
-Contract.prototype.create = function(id) {
-    
+Contract.prototype.create = function(entity) {
+    // TODO put contract detail to database
+    return entity;
 };
 
 Contract.prototype.update = function() {

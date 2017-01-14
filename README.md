@@ -23,6 +23,24 @@ nvm install 6.9.1
 npm install pm2 -g
 ```
 
+### Install Solidity
+
+- Documents: http://solidity.readthedocs.io/en/latest/installing-solidity.html
+- Node.js
+
+```
+npm install solc
+```
+
+- Mac OS
+```
+brew update
+brew upgrade
+brew tap ethereum/ethereum
+brew install solidity
+brew linkapps solidity
+```
+
 ### start ethereum RPC
 ```
 geth --networkid 16888 --port 30303 --nodiscover --maxpeers 25 --nat "any" --rpc --rpccorsdomain "*" --rpcapi "eth,net,web3,debug" --mine --minerthreads 1 --autodag
