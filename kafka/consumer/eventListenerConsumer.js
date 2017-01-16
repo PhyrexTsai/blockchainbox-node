@@ -49,7 +49,7 @@ consumer.on('message', function (message) {
          console.log('transaction receipt info: ', transactionReceiptInfo);
          console.log('block info: ', blockInfo);
 
-        var txStatus = transactionData.APPROVED;
+        var txStatus = transactionData.CONFIRMED;
         if (transactionInfo.gas == transactionReceiptInfo.gasUsed) {
             txStatus = transactionData.FAILED;
         }

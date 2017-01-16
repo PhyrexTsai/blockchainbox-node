@@ -31,7 +31,7 @@ TransactionData.prototype.create = function(entity) {
         console.log('txId: ' + txId + ', txHash: ' + txHash);
         return pool.query("INSERT INTO transactiondata (txid, txhash, data, status, network, txtimestamp) " +
             "values ($1, $2, $3, $4, $5, $6)",
-            [txId, txHash, entity.data, TransactionData.prototype.UNAPPROVED, 'testnet', 'now']).then(function(){
+            [txId, txHash, entity.data, TransactionData.prototype.UNCONFIRMED, 'testnet', 'now']).then(function(){
             return txHash;
         }).catch(function (err) {
             console.log(err.message, err.stack);
@@ -61,7 +61,7 @@ TransactionData.prototype.updateByTransactionHash = function(entity) {
 TransactionData.prototype.updateDataHash = function(entity) {
     return pool.query("UPDATE transactiondata SET " +
         "datahash = $1, status = $2, fromAddress = $3, updateTimestamp = now() WHERE transactionHash = $4 AND txHash = $5",
-        [entity.dataHash, TransactionData.prototype.APPROVED, entity.fromAddress, entity.transactionHash, entity.txHash]);
+        [entity.dataHash, TransactionData.prototype.CONFIRMED, entity.fromAddress, entity.transactionHash, entity.txHash]);
 };
 
 // 這邊我打算把所有 access db 的東西都做成 singleton，目的是同一時間應該只允許一個實例在讀寫才合理

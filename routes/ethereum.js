@@ -1,5 +1,7 @@
 var express = require('express');
 var Web3 = require('web3');
+var solc = require('solc');
+var util = require('util');
 var contract = require('../db/models/contract.js');
 var web3 = new Web3();
 var router = express.Router();
@@ -19,15 +21,69 @@ router.get('/v1/compilers', function (req, res, next) {
  */
 router.put('/v1/contract', function (req, res, next) {
     if (req.body.sourceCode != null && req.body.sourceCode != '') {
-        var result = web3.eth.compile.solidity(req.body.sourceCode);
+        // var result = web3.eth.compile.solidity(req.body.sourceCode);
+        var result = solc.compile(req.body.sourceCode, 1);
         console.log(result);
-        /*contract.create(result).then(function (result) {
-            res.json({'data': result});
-        }).catch(function (err) {
-            // error handle
-            console.log(err.message, err.stack);
-            res.json({'error': {'message': err.message}});
-        });*/
+        var id = [];
+        for (var contractName in result.contracts) {
+            var entity = {
+                name: contractName, 
+                sourceCode: req.body.sourceCode,
+                byteCode: result.contracts[contractName].bytecode,
+                language: result.contracts[contractName].metadata.language,
+                compilerVersion: result.contracts[contractName].metadata.compiler,
+                abi: util.inspect(result.contracts[contractName].interface, false, null),
+                // have to check [solc]
+                gasEstimates: web3.eth.estimateGas({data: result.contracts[contractName].bytecode});
+            };
+
+            contract.create(entity).then(function (contractId) {
+                id.push(contractId);
+
+                // deploy contract
+                var newContract = web3.eth.contract(JSON.parse(result.contracts[contractName].interface));
+                var contractResult = newContract.new({
+                    from: web3.eth.coinbase, 
+                    data: result.contracts[contractName].bytecode,
+                    gas: 4700000
+                }, function(err, deployedContract){
+                    console.log(err, deployedContract);
+                    if (!err) {
+                        if (!deployedContract.address) {
+                            // update transactionHash
+                            console.log(deployedContract.transactionHash);
+                            var entity = {
+                                transactionHash: deployedContract.transactionHash,
+                                id: contractId
+                            };
+                            contract.updateTransactionHash(entity).then(function(result){
+                            }).catch(function (err) {
+                                console.log(err.message, err.stack);
+                                res.json({'error': {'message': err.message}});
+                            });
+                        } else {
+                            // update address
+                            console.log(deployedContract.address);
+                            var entity = {
+                                address: deployedContract.address,
+                                id: contractId
+                            };
+                            contract.updateAddress(entity).then(function(result){
+                            }).catch(function (err) {
+                                console.log(err.message, err.stack);
+                                res.json({'error': {'message': err.message}});
+                            });
+                        }
+                    }
+                });
+
+            }).catch(function (err) {
+                // error handle
+                console.log(err.message, err.stack);
+                res.json({'error': {'message': err.message}});
+            });
+        }
+        res.json({'data': id});
     } else {
         console.log('error invalid source code!');
         res.json({'error': {'message': 'invalid source code'}});
