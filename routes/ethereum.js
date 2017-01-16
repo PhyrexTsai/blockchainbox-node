@@ -39,14 +39,14 @@ router.put('/v1/contract', function (req, res, next) {
 
             contract.create(entity).then(function (contractId) {
                 id.push(contractId);
-
-                // deploy contract
+                // TODO *START* deploy contract 這邊應該要走 queue 比較恰當
                 var newContract = web3.eth.contract(JSON.parse(result.contracts[contractName].interface));
                 var contractResult = newContract.new({
                     from: web3.eth.coinbase, 
                     data: result.contracts[contractName].bytecode,
                     gas: 4700000
-                }, function(err, deployedContract){
+                }, 
+                function(err, deployedContract){
                     console.log(err, deployedContract);
                     if (!err) {
                         if (!deployedContract.address) {
@@ -76,7 +76,7 @@ router.put('/v1/contract', function (req, res, next) {
                         }
                     }
                 });
-
+                // TODO *END* 到這邊都要放到 queue 去聽
             }).catch(function (err) {
                 // error handle
                 console.log(err.message, err.stack);
