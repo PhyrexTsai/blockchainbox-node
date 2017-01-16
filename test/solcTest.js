@@ -5,8 +5,9 @@ var input = "contract ProofOfTransaction {bytes32 public dataHash;mapping (strin
 var output = solc.compile(input, 1); // 1 activates the optimiser
 for (var contractName in output.contracts) {
     // code and ABI that are needed by web3
-    console.log(contractName + ': ' + output.contracts[contractName].bytecode);
+    //console.log(contractName + ': ' + output.contracts[contractName].bytecode);
     //console.log(contractName + '; ' + JSON.parse(output.contracts[contractName].interface));
     //console.log(JSON.stringify(output.contracts[contractName].interface));
-    console.log(util.inspect(output.contracts[contractName].interface, false, null))
+    //console.log(util.inspect(output.contracts[contractName].interface, false, null));
+    console.log(util.inspect(output.contracts[contractName], false, null));
 }

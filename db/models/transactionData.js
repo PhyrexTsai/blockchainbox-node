@@ -11,9 +11,9 @@ var keccak_256 = require('js-sha3').keccak_256;
 
 function TransactionData() {}
 
-TransactionData.prototype.UNAPPROVED = 'UNAPPROVED';
+TransactionData.prototype.UNCONFIRMED = 'UNCONFIRMED';
 TransactionData.prototype.PENDING = 'PENDING';
-TransactionData.prototype.APPROVED = 'APPROVED';
+TransactionData.prototype.CONFIRMED = 'CONFIRMED';
 TransactionData.prototype.FAILED = 'FAILED';
 
 TransactionData.prototype.readAll = function() {
@@ -54,7 +54,7 @@ TransactionData.prototype.delete = function(txHash) {
 
 TransactionData.prototype.updateByTransactionHash = function(entity) {
     return pool.query("UPDATE transactiondata SET " +
-        "status = $1, blocknumber = $2, blockhash = $3, updateTimestamp = now(), gas = $4 WHERE transactionHash = $5",
+        "status = $1, blocknumber = $2, blockhash = $3, updateTimestamp = now(), gasUsed = $4 WHERE transactionHash = $5",
         [entity.status, entity.blockNumber, entity.blockHash, entity.gas, entity.transactionHash]);
 };
 

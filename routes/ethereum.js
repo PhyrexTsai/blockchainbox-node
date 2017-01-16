@@ -20,13 +20,14 @@ router.get('/v1/compilers', function (req, res, next) {
 router.put('/v1/contract', function (req, res, next) {
     if (req.body.sourceCode != null && req.body.sourceCode != '') {
         var result = web3.eth.compile.solidity(req.body.sourceCode);
-        contract.create(result).then(function (result) {
+        console.log(result);
+        /*contract.create(result).then(function (result) {
             res.json({'data': result});
         }).catch(function (err) {
             // error handle
             console.log(err.message, err.stack);
             res.json({'error': {'message': err.message}});
-        });
+        });*/
     } else {
         console.log('error invalid source code!');
         res.json({'error': {'message': 'invalid source code'}});

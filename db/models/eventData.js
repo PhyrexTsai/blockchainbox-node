@@ -10,7 +10,7 @@ EventData.prototype.read = function(id) {
     return pool.query('SELECT * FROM eventdata WHERE id = $1', [id]);
 };
 
-EventData.prototype.create = function(id) {
+EventData.prototype.create = function(entity) {
     
 };
 
