@@ -141,10 +141,10 @@ router.put('/v1/transaction', function (req, res, next) {
  */
 router.get('/v1/transaction', function (req, res, next) {
     var txHash = req.query.txHash;
-    if (txHash == null || txHash == '' || txHash == undefined) {
-        res.json({'error': {'code': 100, 'message': 'txHash is null'}});
+    if (txHash != null && txHash != '' && txHash != undefined) {
+        res.json({'data': {"txHash": txHash}});
     }
-    res.json({'data': {"txHash": txHash}});
+    res.json({'error': {'code': 100, 'message': 'txHash is null'}});
 });
 
 /**
@@ -153,10 +153,10 @@ router.get('/v1/transaction', function (req, res, next) {
  */
 router.get('/v1/transactionReceipt', function (req, res, next) {
     var transactionHash = req.query.transactionHash;
-    if (transactionHash == null || transactionHash == '' || transactionHash == undefined) {
-        res.json({'error': {'code': 102, 'message': 'transactionHash is null'}});
+    if (transactionHash != null && transactionHash != '' && transactionHash != undefined) {
+        res.json({'data': web3.eth.getTransactionReceipt(transactionHash)});
     }
-    res.json({'data': web3.eth.getTransactionReceipt(transactionHash)});
+    res.json({'error': {'code': 102, 'message': 'transactionHash is null'}});
 });
 
 /**
@@ -168,17 +168,60 @@ router.get('/v1/estimateGas', function (req, res, next) {
         to: req.query.to,
         data: req.query.data
     });
-    res.json({'date': {'gas': result}});
+    res.json({'data': {'gas': result}});
 });
 
-// deploy contract via: web3.eth.contract
-// https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethcontract
+/**
+ * GET gas price
+ * https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethgasprice
+ */
+router.get('/v1/gasPrice', function (req, res, next) {
+    var gasPrice = web3.eth.gasPrice;
+    res.json({'data': {'gasPrice': gasPrice.toString(10)}});
+});
 
-// worker: load Event
-// https://github.com/ethereum/wiki/wiki/JavaScript-API#contract-events
-// https://github.com/ethereum/wiki/wiki/JavaScript-API#contract-allevents
+/**
+ * GET current block number
+ * https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethblocknumber
+ */
+router.get('/v1/blockNumber', function (req, res, next) {
+    var blockNumber = web3.eth.blockNumber; 
+    res.json({'data': {'blockNumber': blockNumber}});
+});
 
-// worker: web3.eth.filter, filter pending
-// https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethfilter
+/**
+ * GET hashrate
+ * https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethhashrate
+ */
+router.get('/v1/hashrate', function (req, res, next) {
+    var hashrate = web3.eth.hashrate;
+    res.json({'data': {'hashrate': hashrate}});
+});
 
+/**
+ * GET block info
+ * https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethgetblock
+ */
+router.get('/v1/blockInfo', function (req, res, next) {
+    var blockHashOrBlockNumber = req.query.block;
+    if ((blockHashOrBlockNumber != null && blockHashOrBlockNumber != '' && blockHashOrBlockNumber != undefined) ||
+        Number.isInteger(blockNumberOrString)) {
+        res.json({'data': {'blockInfo': web3.eth.getBlock(req.query.block)}});
+    }
+    res.json({'error': {'code': 103, 'message': 'block hash or block number is needed.'}});
+});
+
+/**
+ * GET block transaction count
+ */
+router.get('/v1/blockTransactionCount', function (req, res, next) {
+    var blockNumberOrString = req.query.block;
+    if (Number.isInteger(blockNumberOrString) || 
+        blockNumberOrString == 'pending' || 
+        blockNumberOrString == 'earliest' || 
+        blockNumberOrString == 'latest') {
+        res.json({'data': {'blockTransactionCount': web3.eth.getBlockTransactionCount(req.query.block)}});
+    }
+    res.json({'error': {'code' 104, 'message': 'block number or block status is needed.'}})
+});
 module.exports = router;
