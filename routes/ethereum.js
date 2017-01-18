@@ -19,6 +19,31 @@ router.get('/v1/compilers', function (req, res, next) {
 });
 
 /**
+ * GET contract info
+ */
+router.get('/v1/contract', function (req, res, next) {
+    var contractId = res.query.contractId;
+    var contractInfo = null;
+    contract.read(contractId).then(function(result) {
+        contractInfo = result;
+    });
+    var contractEventInfo = null;
+    contractEvent.readByContractId(contractId).then(function(result){
+        contractEventInfo = result;
+    });
+    var contractFunctionInfo = null;
+    contractFunction.readByContractId(contractId).then(function(result){
+        contractFunctionInfo = result;
+    });
+    var info = {
+        contract: contractInfo,
+        contractEvent: contractEventInfo,
+        contractFunction: contractFunctionInfo
+    };
+    res.json({'data': info});
+});
+
+/**
  * PUT deploy solidity contract
  */
 router.put('/v1/contract', function (req, res, next) {
