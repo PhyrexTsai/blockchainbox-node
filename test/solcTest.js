@@ -9,5 +9,15 @@ for (var contractName in output.contracts) {
     //console.log(contractName + '; ' + JSON.parse(output.contracts[contractName].interface));
     //console.log(JSON.stringify(output.contracts[contractName].interface));
     //console.log(util.inspect(output.contracts[contractName].interface, false, null));
-    console.log(util.inspect(output.contracts[contractName], false, null));
+    //console.log(util.inspect(output.contracts[contractName], false, null));
+
+    var abi = output.contracts[contractName].interface;
+    JSON.parse(abi).forEach(function(data){
+    	if (data.type == 'function') {
+    		console.log('function', JSON.stringify(data));
+    	}
+    	if (data.type == 'event') {
+    		console.log('event', JSON.stringify(data));
+    	}
+    });
 }

@@ -11,7 +11,17 @@ ContractEvent.prototype.read = function(id) {
 };
 
 ContractEvent.prototype.create = function(entity) {
-    
+	return pool.query("SELECT nextval(pg_get_serial_sequence('contractEvent', 'id')) as id;").then(function(result) {
+        var id = result.rows[0].id;
+	    return pool.query('INSERT INTO contractEvent (id, contractId, eventName, eventParameters, createTimestamp) VALUES (?, ?, ?, ?, now())', 
+	    	[id, entity.contractId, entity.eventName, entity.eventParameters]).then(function(){
+            return id;
+        }).catch(function (err) {
+            console.log(err.message, err.stack);
+        });
+	}).catch(function(err){
+		console.log(err.message, err.stack);
+	});
 };
 
 ContractEvent.prototype.update = function() {

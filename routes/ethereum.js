@@ -3,6 +3,8 @@ var Web3 = require('web3');
 var solc = require('solc');
 var util = require('util');
 var contract = require('../db/models/contract.js');
+var contractFunction = require('../db/models/contractFunction.js');
+var contractEvent = require('../db/models/contractEvent.js');
 var web3 = new Web3();
 var router = express.Router();
 
@@ -26,19 +28,49 @@ router.put('/v1/contract', function (req, res, next) {
         console.log(result);
         var id = [];
         for (var contractName in result.contracts) {
-            var entity = {
+            var abi = util.inspect(result.contracts[contractName].interface, false, null)
+            var contractEntity = {
                 name: contractName, 
                 sourceCode: req.body.sourceCode,
                 byteCode: result.contracts[contractName].bytecode,
                 language: result.contracts[contractName].metadata.language,
                 compilerVersion: result.contracts[contractName].metadata.compiler,
-                abi: util.inspect(result.contracts[contractName].interface, false, null),
+                abi: abi,
                 // have to check [solc]
                 gasEstimates: web3.eth.estimateGas({data: result.contracts[contractName].bytecode});
             };
 
-            contract.create(entity).then(function (contractId) {
+            contract.create(contractEntity).then(function (contractId) {
                 id.push(contractId);
+
+                JSON.parse(abi).forEach(function(data){
+                    if (data.type == 'function') {
+                        var contractEventEntity = {
+                            contractId: contractId,
+                            eventName: data.name,
+                            eventParameters: data
+                        };
+                        // TODO insert contractEvent and contractFunction
+                        contractEvent.create(contractEventEntity).then(function (contractEventId) {
+                            console.log(contractEventId);
+                        }).catch(function (err) {
+                            console.log(err.message, err.stack);
+                        });
+                    }
+                    if (data.type == 'event') {
+                        var contractFunctionEntity = {
+                            contractId: contractId,
+                            functionName: data.name,
+                            functionParameters: data
+                        };
+                        contractFunction.create(contractFunctionEntity).then(function (contractFunctionId) {
+                            console.log(contractFunctionId);
+                        }).catch(function (err) {
+                            console.log(err.message, err.stack);
+                        });
+                    }
+                });
+
                 // TODO *START* deploy contract 這邊應該要走 queue 比較恰當
                 var newContract = web3.eth.contract(JSON.parse(result.contracts[contractName].interface));
                 var contractResult = newContract.new({
