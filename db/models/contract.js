@@ -35,12 +35,12 @@ Contract.prototype.update = function() {
 };
 
 Contract.prototype.updateTransactionHash = function(entity) {
-	return pool.query("UPDATE contract SET transactionHash = ?, status = ?, createTimestamp = now() WHERE id = ?", 
-		[entity.transactionHash, Contract.prototype.PENDING entity.id]);
+	return pool.query("UPDATE contract SET transactionHash = $1, status = $2, createTimestamp = now() WHERE id = $3", 
+		[entity.transactionHash, Contract.prototype.PENDING, entity.id]);
 }
 
 Contract.prototype.updateAddress = function(entity) {
-	return pool.query("UPDATE contract SET address = ?, status = ?, createTimestamp = now() WHERE id = ?", 
+	return pool.query("UPDATE contract SET address = $1, status = $2, createTimestamp = now() WHERE id = $3", 
 		[entity.address, Contract.prototype.CONFIRMED, entity.id]);
 }
 
