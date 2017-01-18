@@ -115,7 +115,7 @@ router.put('/v1/contract', function (req, res, next) {
                 res.json({'error': {'message': err.message}});
             });
         }
-        res.json({'data': id});
+        res.json({'data': {'contractId': id}});
     } else {
         console.log('error invalid source code!');
         res.json({'error': {'message': 'invalid source code'}});
