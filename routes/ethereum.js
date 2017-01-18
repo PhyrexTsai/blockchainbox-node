@@ -62,7 +62,7 @@ router.put('/v1/contract', function (req, res, next) {
                 compilerVersion: result.contracts[contractName].metadata.compiler,
                 abi: abi,
                 // have to check [solc]
-                gasEstimates: web3.eth.estimateGas({data: result.contracts[contractName].bytecode});
+                gasEstimates: web3.eth.estimateGas({data: result.contracts[contractName].bytecode})
             };
 
             contract.create(contractEntity).then(function (contractId) {
@@ -279,6 +279,6 @@ router.get('/v1/blockTransactionCount', function (req, res, next) {
         blockNumberOrString == 'latest') {
         res.json({'data': {'blockTransactionCount': web3.eth.getBlockTransactionCount(req.query.block)}});
     }
-    res.json({'error': {'code' 104, 'message': 'block number or block status is needed.'}})
+    res.json({'error': {'code': 104, 'message': 'block number or block status is needed.'}})
 });
 module.exports = router;
