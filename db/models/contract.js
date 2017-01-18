@@ -16,9 +16,18 @@ Contract.prototype.read = function(id) {
 };
 
 Contract.prototype.create = function(entity) {
-    return pool.query("INSERT INTO contract (name, sourceCode, byteCode, language, compilerVersion, abi, createTimestamp, gasEstimates, status) VALUES " +
-        "(?, ?, ?, ?, ?, ?, now(), ?, ?)",
-        [entity.name, entity.sourceCode, entity.byteCode, entity.language, entity.compilerVersion, entity.abi, entity.gasEstimates, Contract.prototype.UNCONFIRMED]);
+	return pool.query("SELECT nextval(pg_get_serial_sequence('contractEvent', 'id')) as id;").then(function(result) {
+        var id = result.rows[0].id;
+	    return pool.query("INSERT INTO contract (name, sourceCode, byteCode, language, compilerVersion, abi, createTimestamp, gasEstimates, status) VALUES " +
+	        "(?, ?, ?, ?, ?, ?, now(), ?, ?)",
+	        [entity.name, entity.sourceCode, entity.byteCode, entity.language, entity.compilerVersion, entity.abi, entity.gasEstimates, Contract.prototype.UNCONFIRMED], function(){
+	        return id;
+	    }).catch(function (err) {
+            console.log(err.message, err.stack);
+        });
+	}).catch(function (err) {
+		console.log(err.message, err.stack);
+	});
 };
 
 Contract.prototype.update = function() {
