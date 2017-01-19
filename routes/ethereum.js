@@ -29,11 +29,11 @@ router.get('/v1/contract', function (req, res, next) {
     var contractFunctionInfo = null;
     var contractLoaded = new Promise(function(resolve, reject) {
         contract.read(contractId).then(function(result) {
-            contractInfo = result;
+            contractInfo = result.rows;
             contractEvent.readByContractId(contractId).then(function(result){
-                contractEventInfo = result; 
+                contractEventInfo = result.rows; 
                 contractFunction.readByContractId(contractId).then(function(result){
-                    contractFunctionInfo = result;
+                    contractFunctionInfo = result.rows;
                     var info = {
                         contract: contractInfo,
                         contractEvent: contractEventInfo,
