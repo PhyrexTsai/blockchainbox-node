@@ -25,6 +25,7 @@
     "kafka-node": "1.0.7",
     "js-sha3": "0.5.5",
     "node-schedule": "1.2.0",
-    "solc": "0.4.8"
+    "solc": "0.4.8",
+    "bluebird": "3.4.1"
   }
 }

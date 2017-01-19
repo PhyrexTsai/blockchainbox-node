@@ -2,6 +2,7 @@ var express = require('express');
 var Web3 = require('web3');
 var solc = require('solc');
 var util = require('util');
+var Promise = require('bluebird');
 var contract = require('../db/models/contract.js');
 var contractFunction = require('../db/models/contractFunction.js');
 var contractEvent = require('../db/models/contractEvent.js');
@@ -22,25 +23,27 @@ router.get('/v1/compilers', function (req, res, next) {
  * GET contract info
  */
 router.get('/v1/contract', function (req, res, next) {
-    var contractId = res.query.contractId;
+    var contractId = req.query.contractId;
     var contractInfo = null;
-    contract.read(contractId).then(function(result) {
-        contractInfo = result;
-    });
     var contractEventInfo = null;
-    contractEvent.readByContractId(contractId).then(function(result){
-        contractEventInfo = result;
-    });
     var contractFunctionInfo = null;
-    contractFunction.readByContractId(contractId).then(function(result){
-        contractFunctionInfo = result;
+    var contractLoaded = new Promise(function(resolve, reject) {
+        contract.read(contractId).then(function(result) {
+            contractInfo = result;
+            contractEvent.readByContractId(contractId).then(function(result){
+                contractEventInfo = result; 
+                contractFunction.readByContractId(contractId).then(function(result){
+                    contractFunctionInfo = result;
+                    var info = {
+                        contract: contractInfo,
+                        contractEvent: contractEventInfo,
+                        contractFunction: contractFunctionInfo
+                    };
+                    res.json({'data': info});
+                })
+            })
+        })
     });
-    var info = {
-        contract: contractInfo,
-        contractEvent: contractEventInfo,
-        contractFunction: contractFunctionInfo
-    };
-    res.json({'data': info});
 });
 
 /**
@@ -53,14 +56,14 @@ router.put('/v1/contract', function (req, res, next) {
         console.log(result);
         var id = [];
         for (var contractName in result.contracts) {
-            var abi = util.inspect(result.contracts[contractName].interface, false, null)
+            var abi = result.contracts[contractName].interface;
             var contractEntity = {
                 name: contractName, 
                 sourceCode: req.body.sourceCode,
                 byteCode: result.contracts[contractName].bytecode,
                 language: result.contracts[contractName].metadata.language,
                 compilerVersion: result.contracts[contractName].metadata.compiler,
-                abi: abi,
+                abi: util.inspect(abi, false, null),
                 // have to check [solc]
                 gasEstimates: web3.eth.estimateGas({data: result.contracts[contractName].bytecode})
             };
@@ -95,7 +98,7 @@ router.put('/v1/contract', function (req, res, next) {
                         });
                     }
                 });
-
+                /*
                 // TODO *START* deploy contract 這邊應該要走 queue 比較恰當
                 var newContract = web3.eth.contract(JSON.parse(result.contracts[contractName].interface));
                 var contractResult = newContract.new({
@@ -134,6 +137,7 @@ router.put('/v1/contract', function (req, res, next) {
                     }
                 });
                 // TODO *END* 到這邊都要放到 queue 去聽
+                */
             }).catch(function (err) {
                 // error handle
                 console.log(err.message, err.stack);
