@@ -10,12 +10,6 @@ var router = express.Router();
 var kafkaTopic = 'InsertQueue';
 web3.setProvider(new web3.providers.HttpProvider(process.env.ENODE_BASE || 'http://localhost:8545'));
 
-var kafka = require('kafka-node'),
-                HighLevelProducer = kafka.HighLevelProducer,
-                client = new kafka.Client("127.0.0.1:2181"),
-                producer = new HighLevelProducer(client),
-                message = {};
-
 /**
  * 把基本服務的 API 都放在這邊
  */

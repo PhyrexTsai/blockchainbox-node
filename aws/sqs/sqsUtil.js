@@ -1,3 +1,4 @@
+var aws = require('aws-sdk');
 function SqsUtil() {}
 
 
@@ -7,14 +8,15 @@ aws.config.loadFromPath(__dirname + '/config.json');
 // Instantiate SQS.
 var sqs = new aws.SQS();
 
+
 //List queues
 SqsUtil.prototype.list = function() {
     sqs.listQueues(function(err, data) {
         if(err) {
-            res.send(err);
+            console.log(err);
         } 
         else {
-            res.send(data);
+            console.log(data);
         } 
     });
 };
@@ -28,10 +30,10 @@ SqsUtil.prototype.create = function(queueName) {
 
     sqs.createQueue(params, function(err, data) {
         if(err) {
-            res.send(err);
+             console.log(err);
         } 
         else {
-            res.send(data);
+             console.log(data);
         } 
     });
 };
@@ -48,10 +50,10 @@ SqsUtil.prototype.send = function(messageBody, queueUrl, delaySeconds) {
 
     sqs.sendMessage(params, function(err, data) {
         if(err) {
-            res.send(err);
+             console.log(err);
         } 
         else {
-            res.send(data);
+             console.log( data);
         } 
     });
 };
@@ -67,10 +69,10 @@ SqsUtil.prototype.receive = function(queueUrl, visibilityTimeout) {
     
     sqs.receiveMessage(params, function(err, data) {
         if(err) {
-            res.send(err);
+             console.log(err);
         } 
         else {
-            res.send(data);
+             console.log('receive:  ' + data['Messages'][0]['Body']);
         } 
     });
 };
@@ -85,10 +87,10 @@ SqsUtil.prototype.delete = function(queueUrl, receipt) {
     
     sqs.deleteMessage(params, function(err, data) {
         if(err) {
-            res.send(err);
+             console.log(err);
         } 
         else {
-            res.send(data);
+             console.log(data);
         } 
     });
 };
@@ -102,10 +104,10 @@ SqsUtil.prototype.purge = function(queueUrl) {
     
     sqs.purgeQueue(params, function(err, data) {
         if(err) {
-            res.send(err);
+             console.log(err);
         } 
         else {
-            res.send(data);
+             console.log(data);
         } 
     });
 };

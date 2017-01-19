@@ -26,6 +26,7 @@
     "js-sha3": "0.5.5",
     "node-schedule": "1.2.0",
     "solc": "0.4.8",
-    "bluebird": "3.4.1"
+    "bluebird": "3.4.1",
+    "aws-sdk": "2.7.25"
   }
 }
