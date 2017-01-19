@@ -33,7 +33,7 @@ var result = solc.compile(input, 1); // 1 activates the optimiser
                 byteCode: result.contracts[contractName].bytecode,
                 language: result.contracts[contractName].metadata.language,
                 compilerVersion: result.contracts[contractName].metadata.compiler,
-                abi: util.inspect(result.contracts[contractName].interface, false, null),
+                abi: result.contracts[contractName].interface,
                 // have to check [solc]
                 gasEstimates: 0//web3.eth.estimateGas({data: result.contracts[contractName].bytecode})
             };
@@ -41,7 +41,6 @@ var result = solc.compile(input, 1); // 1 activates the optimiser
             contract.create(contractEntity).then(function (contractId) {
             	console.log('contractId: ' + contractId);
                 id.push(contractId);
-
                 JSON.parse(abi).forEach(function(data){
                 	console.log(data.type);
                     if (data.type == 'function') {

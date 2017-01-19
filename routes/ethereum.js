@@ -63,7 +63,7 @@ router.put('/v1/contract', function (req, res, next) {
                 byteCode: result.contracts[contractName].bytecode,
                 language: result.contracts[contractName].metadata.language,
                 compilerVersion: result.contracts[contractName].metadata.compiler,
-                abi: util.inspect(abi, false, null),
+                abi: abi,
                 // have to check [solc]
                 gasEstimates: web3.eth.estimateGas({data: result.contracts[contractName].bytecode})
             };
