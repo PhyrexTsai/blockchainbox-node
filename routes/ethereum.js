@@ -72,7 +72,7 @@ router.put('/v1/contract', function (req, res, next) {
                 id.push(contractId);
 
                 JSON.parse(abi).forEach(function(data){
-                    if (data.type == 'function') {
+                    if (data.type == 'event') {
                         var contractEventEntity = {
                             contractId: contractId,
                             eventName: data.name,
@@ -85,7 +85,7 @@ router.put('/v1/contract', function (req, res, next) {
                             console.log(err.message, err.stack);
                         });
                     }
-                    if (data.type == 'event') {
+                    if (data.type == 'function') {
                         var contractFunctionEntity = {
                             contractId: contractId,
                             functionName: data.name,

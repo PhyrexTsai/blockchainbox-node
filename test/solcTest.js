@@ -43,7 +43,7 @@ var result = solc.compile(input, 1); // 1 activates the optimiser
                 id.push(contractId);
                 JSON.parse(abi).forEach(function(data){
                 	console.log(data.type);
-                    if (data.type == 'function') {
+                    if (data.type == 'event') {
                         var contractEventEntity = {
                             contractId: contractId,
                             eventName: data.name,
@@ -56,7 +56,7 @@ var result = solc.compile(input, 1); // 1 activates the optimiser
                             console.log(err.message, err.stack);
                         });
                     }
-                    if (data.type == 'event') {
+                    if (data.type == 'function') {
                         var contractFunctionEntity = {
                             contractId: contractId,
                             functionName: data.name,

@@ -6,7 +6,7 @@ var web3 = new Web3();
 
 web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 
-var contractId = 20;
+var contractId = 24;
 var contractAddress = '0xD0F96Ba2FEDB74b92343De6ba3f1b3D55076B2B2';
 
 contract.read(contractId).then(function(result){
